@@ -2,15 +2,15 @@
 
 <form action="/new" method="post">
     <label for="title">Title</label>
-    <input type="text" name="title" id="title" >
+    <input type="text" name="title" placeholder="e.g. Atomic Habits" id="title">
     <label for="author">Author</label>
-    <input type="text" name="author" id="author" >
+    <input type="text" name="author" placeholder="e.g. James Clear" id="author">
     <label for="isbn">ISBN</label>
-    <input type="text" name="isbn" id="isbn" minlength="1" maxlength="13" >
+    <input type="text" name="isbn" placeholder="e.g. 9780735211292" id="isbn" minlength="1" maxlength="13">
     <label for="rating">Rating</label>
-    <input type="number" step="0.1" name="rating" id="rating" min="1" max="5" >
+    <input type="number" step="0.1" placeholder="1 to 5" name="rating" id="rating" min="1" max="5">
     <label for="notes">Notes</label>
-    <textarea name="notes" id="notes" ></textarea>
+    <textarea name="notes" id="notes" placeholder="What did you learn or think about this book?"></textarea>
     <% if(locals.error){ %> 
         <p class="err"><%=error%></p>
     <% } %> 
