@@ -2,7 +2,7 @@
 <h1>Sorting</h1>
 <div class="sort">
     <form class="sort" action="/sort" method="post">
-        <input type="text" name="title_entry" placeholder="Title..." value="<%= locals.query || '' %>">
+        <input type="text" name="title_entry" placeholder="Search by book title, e.g. Atomic Habits" value="<%= locals.query || '' %>">
         <select name="title">
             <option value="">Title</option>
             <option value="ASC" <%= (locals.title === "ASC") ? "selected" : "" %>>title(A-Z)</option>
