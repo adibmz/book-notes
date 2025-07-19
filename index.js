@@ -120,10 +120,12 @@ app.post("/sort", async (req,res)=>{
     }
     const result = await db.query(query, params);
     const data = result.rows;
+    const length = result.rowCount;
     if(!title_entry && !title && !rating && ! recently){
         res.redirect("/")
     } else {
         res.render("index.ejs",{books:data,
+            length:length,
             query:title_entry,
             title:title,
             rating:rating,
