@@ -1,3 +1,133 @@
 body{
-    background-color: aquamarine;
+    margin: 0;
+    padding: 0;
+}
+*{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+form.sort{
+    display: flex;
+    gap: 0.75rem;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: black;
+    color: white;
+}
+
+main{
+    padding: 1rem;
+}
+a,input[type="submit"]{
+    border: none;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.add,.filter,.submit{
+    background-color: blue;
+
+}
+.edit{
+    margin-top: 10px;
+    background-color: green;
+    margin-right: 5px;
+}
+.delete{
+    background-color: red;
+}
+.books{
+    margin-top: 2rem;
+}
+.book{
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 2rem;
+}
+.submit{
+    box-sizing: border-box;
+    width: 100px;
+}
+textarea{
+    resize: none;
+    height: 150px;
+}
+.err{
+    color: red;
+}
+label{
+    font-weight: bold;
+    font-size: larger;
+}
+input[type="text"],textarea,input[type="number"]{
+    margin-right: 10px;
+    border: 1px solid rgb(241, 239, 239);
+    padding: 1rem;
+    border-radius: 10px;
+    width: 90%;
+}
+input[name="title_entry"]{
+    margin-right: 10px;
+    border: 1px solid rgb(241, 239, 239);
+    width: 30%;
+    padding: 1rem;
+    border-radius: 10px;
+}
+.action{
+    margin-top: 30px;
+}
+form[action="/new"],form[action="/update"]{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+select{
+    margin-right: 10px;
+    border: 1px solid rgb(241, 239, 239);
+    width: 15%;
+    padding: 1rem;
+    border-radius: 10px;
+}
+form.sort input[name="title_entry"],
+form.sort select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid rgb(241, 239, 239);
+    font-size: 1rem;
+}
+footer{
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    font-weight: 600;
+}
+@media (max-width: 700px) {
+    form.sort{
+        flex-direction: column;
+    }
+    select{
+        width: 100%;
+    }
+    input[name="title_entry"]{
+        width: 100%;
+    }
+    
+}
+@media (max-width: 389px) {
+    .book{
+        flex-direction: column;
+    }
+    
 }

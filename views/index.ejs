@@ -1,3 +1,56 @@
 <%- include('partials/header.ejs') %>
-<h1>Hello Adib</h1>
+<h1>Sorting</h1>
+<div class="sort">
+    <form class="sort" action="/sort" method="post">
+        <input type="text" name="title_entry" placeholder="Title..." value="<%= locals.query || '' %>">
+        <select name="title">
+            <option value="">Title</option>
+            <option value="ASC" <%= (locals.title === "ASC") ? "selected" : "" %>>title(A-Z)</option>
+            <option value="DESC" <%= (locals.title === "DESC") ? "selected" : "" %>>title(Z-A)</option>
+        </select>
+        <select name="rating">
+            <option value="">Rating</option>
+            <option value="ASC" <%= (locals.rating === "ASC") ? "selected" : "" %>>lowest to highest</option>
+            <option value="DESC" <%= (locals.rating === "DESC") ? "selected" : "" %>>highest to lowest</option>
+        </select>
+        <select name="recently">
+            <option value="">Recently</option>
+            <option value="ASC" <%= (locals.recently === "ASC") ? "selected" : "" %>>oldest</option>
+            <option value="DESC" <%= (locals.recently === "DESC") ? "selected" : "" %>>newest</option>
+        </select>
+        <input type="submit" class="filter" value="Filter">
+    </form>
+</div>
+<h1>All books</h1>
+<div class="books">
+    <% if(locals.books){%>
+    <% books.forEach(book=>{ %>
+        <div class="book">
+            <img src="<%=book.cover_url%>" alt="<%= book.title %>" height="271" width="180" onerror="this.src='assets/404.jpg'">
+            <div class="info">
+                <h2><%= book.title %></h2>
+                <h3>By <%= book.author %></h3>
+                <p>Rating:<%= book.rating %>/5</p>
+                <p><%= book.notes %></p>
+                <p>
+                    <%
+                        let dateObj = new Date(book.date_finished);
+                        let day = String(dateObj.getDate()).padStart(2, '0');
+                        let month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                        let year = dateObj.getFullYear();
+                        let formattedDate = `${day}-${month}-${year}`;
+                    %>
+                    Finished on:<%=  formattedDate %>
+                </p>
+                <div class="action">
+                    <a href="/edit/<%= book.id %>" class="edit">Edit</a>
+                    <a href="/delete/<%= book.id %>" class="delete" onclick="return confirm('Are you sure to delete this book')">Delete</a>
+                </div>
+                
+            </div>
+            
+        </div>
+    <% }) %>   
+<% } %>
+</div>
 <%- include('partials/footer.ejs') %>
