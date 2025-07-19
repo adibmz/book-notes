@@ -19,7 +19,8 @@ app.use(express.static("public"));
 app.get("/",async (req,res)=>{
     const result = await db.query("SELECT * FROM book ORDER BY id ASC");
     const data = result.rows;
-    res.render("index.ejs",{books:data});
+    const length = result.rowCount;
+    res.render("index.ejs",{books:data,length:length});
 });
 app.get("/add",(req,res)=>{
     res.render("new.ejs")
