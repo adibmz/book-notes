@@ -8,18 +8,19 @@ A full-stack web application to manage and review your book reading notes. Users
 - View all books with cover images (fetched by ISBN)
 - Sort and filter books by title, rating, or date finished
 - Responsive and clean UI
+- Deployable to Vercel with Aiven PostgreSQL
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/) (v14 or higher recommended)
 - [npm](https://www.npmjs.com/)
-- [PostgreSQL](https://www.postgresql.org/) (Ensure the service is running)
+- [PostgreSQL](https://www.postgresql.org/) (local) or [Aiven](https://aiven.io/) (cloud)
 
 ## Setup Instructions
 
 1. **Clone the repository**
    ```bash
    git clone <repo-url>
-   cd "Book Notes"
+   cd book-notes
    ```
 
 2. **Install dependencies**
@@ -27,36 +28,64 @@ A full-stack web application to manage and review your book reading notes. Users
    npm install
    ```
 
-3. **Database Setup**
-   - Create a PostgreSQL database named `book_notes`.
-   - Update the database connection settings in `index.js` if your PostgreSQL user, password, or port differ from the defaults:
-     ```js
-     const db = new pg.Client({
-         user: "postgres",      // your PostgreSQL username
-         host: "localhost",
-         database: "book_notes", // database name
-         password: "your_password",     // your PostgreSQL password
-         port: 5432,             // default PostgreSQL port
-     });
-     ```
-   - Create the required table and insert a sample book by running the SQL in `queries.sql`:
-     ```bash
-     psql -U postgres -d book_notes -f queries.sql
-     ```
-     (Replace `postgres` with your PostgreSQL username if different.)
+3. **Environment Variables**
 
-## Running the App
+   Create a `.env` file in the root directory (already in `.gitignore`):
+   ```env
+   DB_USER=postgres
+   DB_HOST=localhost
+   DB_NAME=book_notes
+   DB_PASSWORD=
+   DB_PORT=5432
+   ```
 
-1. **Start the server**
-   ```bash
-   npx nodemon index.js
+   For Aiven, use your service credentials:
+   ```env
+   DB_USER=avnadmin
+   DB_HOST=your-service.aivencloud.com
+   DB_NAME=defaultdb
+   DB_PASSWORD=your_aiven_password
+   DB_PORT=12345
    ```
-   Or, if you don't have nodemon installed globally:
+
+4. **Database Setup**
+
+   Create the required table and insert a sample book by running the SQL in `queries.sql`:
+
+   **Local PostgreSQL:**
    ```bash
-   npm install -g nodemon
-   npx nodemon index.js
+   psql -U postgres -d book_notes -f queries.sql
    ```
-   The server will run at [http://localhost:3000](http://localhost:3000)
+
+   **Aiven:**
+   Use the Query Editor in the [Aiven Console](https://console.aiven.io) or connect via `psql`:
+   ```bash
+   psql 'postgresql://avnadmin:PASSWORD@HOST:PORT/defaultdb?sslmode=require' -f queries.sql
+   ```
+
+## Running Locally
+
+```bash
+npm start
+```
+
+The server will run at [http://localhost:3000](http://localhost:3000)
+
+## Deploying to Vercel
+
+1. Push your code to GitHub
+2. Import the repo in [Vercel](https://vercel.com)
+3. Add the following environment variables in Vercel → Settings → Environment Variables:
+
+   | Variable | Value |
+   |---|---|
+   | `DB_USER` | Your Aiven username |
+   | `DB_HOST` | Your Aiven host |
+   | `DB_NAME` | Your Aiven database name |
+   | `DB_PASSWORD` | Your Aiven password |
+   | `DB_PORT` | Your Aiven port |
+
+4. Deploy — Vercel will use `api/index.js` as the serverless entry point
 
 ## Usage
 - Visit the home page to see all books.
@@ -65,10 +94,13 @@ A full-stack web application to manage and review your book reading notes. Users
 - Use the sort/filter form to organize your book list.
 
 ## Project Structure
-- `index.js` - Main server file (Express app)
-- `views/` - EJS templates for UI
-- `public/` - Static assets (CSS, images)
-- `queries.sql` - SQL for table creation and sample data
+- `index.js` — Main server file for local development
+- `api/index.js` — Vercel serverless entry point
+- `vercel.json` — Vercel routing configuration
+- `views/` — EJS templates for UI
+- `public/` — Static assets (CSS, images)
+- `queries.sql` — SQL for table creation and sample data
+- `.env` — Environment variables (not committed)
 
 ## License
-MIT 
+MIT
