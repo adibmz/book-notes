@@ -27,13 +27,14 @@ app.set("views", path.join(__dirname, "../views"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Fetch book cover from Google Books API
+// Fetch book cover from Open Library Books API
 async function getBookCover(isbn) {
     try {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+        const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
         const data = await response.json();
-        if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-            return data.items[0].volumeInfo.imageLinks.thumbnail.replace('http://', 'https://');
+        const book = data[`ISBN:${isbn}`];
+        if (book?.cover?.medium) {
+            return book.cover.medium;
         }
     } catch (err) {
         console.log("Cover fetch error:", err);
