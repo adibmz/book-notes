@@ -27,6 +27,20 @@ app.set("views", path.join(__dirname, "../views"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
+// Fetch book cover from Google Books API
+async function getBookCover(isbn) {
+    try {
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+        const data = await response.json();
+        if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+            return data.items[0].volumeInfo.imageLinks.thumbnail.replace('http://', 'https://');
+        }
+    } catch (err) {
+        console.log("Cover fetch error:", err);
+    }
+    return null;
+}
+
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT * FROM book ORDER BY id ASC");
     const data = result.rows;
@@ -44,7 +58,7 @@ app.post("/new", async (req, res) => {
     const isbn = req.body.isbn.trim();
     const rating = parseFloat(req.body.rating);
     const notes = req.body.notes.trim();
-    const url = `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
+    const url = await getBookCover(isbn) || "/assets/404.jpg";
     if (title && author && isbn && isbn.length >= 1 && isbn.length <= 13 && !isNaN(rating) && rating >= 1 && rating <= 5 && notes) {
         try {
             await db.query(
@@ -87,7 +101,7 @@ app.post("/update", async (req, res) => {
     const isbn = req.body.isbn.trim();
     const rating = parseFloat(req.body.rating);
     const notes = req.body.notes.trim();
-    const url = `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
+    const url = await getBookCover(isbn) || "/assets/404.jpg";
     if (title && author && isbn && isbn.length >= 1 && isbn.length <= 13 && !isNaN(rating) && rating >= 1 && rating <= 5 && notes) {
         try {
             await db.query(
