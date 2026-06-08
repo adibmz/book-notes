@@ -1,6 +1,9 @@
 body{
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 *{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -20,6 +23,7 @@ header{
 
 main{
     padding: 1rem;
+    flex: 1;
 }
 a,input[type="submit"]{
     border: none;
